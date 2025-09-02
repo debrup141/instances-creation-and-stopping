@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: show gathered facts
+      ansible.builtin.debug:
+        var: ansible_facts
+    - name: stop ec2 instances (ubuntu)
+      ansible.builtin.command: /sbin/shutdown -t now
+      when:
+        ansible_facts['os_family'] == "RedHat"
+      
+

@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Create ec2 instances
+    amazon.aws.ec2_instance:
+      name: "{{ item.name }}"
+      key_name: "debrup-key"
+      # vpc_subnet_id: subnet-013744e41e8088axx
+      instance_type: t2.micro
+      security_group: default
+      region: ap-south-1
+      aws_access_key: "{{ access }}"  # From vault as defined
+      aws_secret_key: "{{ secret }}"  # From vault as defined      
+      network:
+        assign_public_ip: true
+      image_id: "{{ item.image }}"
+
+    loop:
+      - { image: "ami-0861f4e788f5069dd", name: "managed-node-1" }
+      - { image: "ami-02d26659fd82cf299", name: "managed-node-2" }
+      - { image: "ami-02d26659fd82cf299", name: "managed-node-3" }
